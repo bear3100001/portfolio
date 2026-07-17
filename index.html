@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khushi Arora — Part 1 Undergraduate Portfolio | The Bartlett School of Architecture</title>
+<meta name="description" content="Khushi Arora — Part 1 Undergraduate Short Portfolio, The Bartlett School of Architecture. Selected Works 2022–2025.">
+<style>
+  /* ————————————————————————————————
+     Faithful presentation of the original PDF.
+     Pages are rendered exactly as designed; this
+     file only handles layout, sequencing and
+     responsive scaling — no restyling.
+  ———————————————————————————————— */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #fafaf9;           /* neutral backdrop so page edges read on any screen */
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .portfolio {
+    max-width: 1500px;             /* A3 spreads at comfortable reading width */
+    margin: 0 auto;
+    padding: 24px 12px;
+  }
+
+  .page {
+    position: relative;
+    margin: 0 auto 24px auto;
+    line-height: 0;                /* remove inline-img gap */
+    box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    background: #fff;
+  }
+
+  .page img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* A4 portrait pages shown at half the spread width,
+     matching their true printed proportion next to A3 spreads */
+  .page.portrait { width: 50%; }
+
+  /* Invisible hotspots over the Contents entries — functional only */
+  .hotspot {
+    position: absolute;
+    display: block;
+    left: 56%;
+    width: 36%;
+    height: 9%;
+    text-indent: -9999px;          /* accessible label, visually nothing */
+    overflow: hidden;
+  }
+  .hotspot:focus-visible { outline: 2px solid #888; }
+  #hs-01 { top: 28.5%; }
+  #hs-02 { top: 42%; }
+  #hs-03 { top: 55.5%; }
+
+  @media (max-width: 800px) {
+    .portfolio { padding: 12px 6px; }
+    .page { margin-bottom: 12px; }
+    .page.portrait { width: 72%; } /* keep the cover readable on small screens */
+  }
+</style>
+</head>
+<body>
+
+<main class="portfolio">
+
+  <!-- Cover -->
+  <div class="page portrait">
+    <img src="pages/page-01.jpg" alt="Cover — Khushi Arora, Part 1 Undergraduate Short Portfolio, The Bartlett School of Architecture, Selected Works 2022–2025" fetchpriority="high">
+  </div>
+
+  <!-- Contents (entries are clickable) -->
+  <div class="page">
+    <img src="pages/page-02.jpg" alt="Contents — 01 Maison Vestige, 02 Light After Dark, 03 Healing with Clay">
+    <a class="hotspot" id="hs-01" href="#project-01">Go to 01 — Maison Vestige</a>
+    <a class="hotspot" id="hs-02" href="#project-02">Go to 02 — Light After Dark</a>
+    <a class="hotspot" id="hs-03" href="#project-03">Go to 03 — Healing with Clay</a>
+  </div>
+
+  <!-- 01 · Maison Vestige -->
+  <div class="page" id="project-01">
+    <img src="pages/page-03.jpg" loading="lazy" alt="Maison Vestige: A Museum of Constructed Belonging — night render of the building on a Paris street">
+  </div>
+  <div class="page">
+    <img src="pages/page-04.jpg" loading="lazy" alt="Maison Vestige — key section drawing">
+  </div>
+  <div class="page">
+    <img src="pages/page-05.jpg" loading="lazy" alt="Maison Vestige — technical investigation into vernacular construction, roof joinery detail and speculative joinery models">
+  </div>
+  <div class="page">
+    <img src="pages/page-06.jpg" loading="lazy" alt="Maison Vestige — ground floor plan">
+  </div>
+  <div class="page">
+    <img src="pages/page-07.jpg" loading="lazy" alt="Maison Vestige — entrance to the building at night">
+  </div>
+
+  <!-- 02 · Light After Dark -->
+  <div class="page" id="project-02">
+    <img src="pages/page-08.jpg" loading="lazy" alt="Light After Dark: Reimaging the City — night render of the reimagined York watergate with drawings">
+  </div>
+  <div class="page">
+    <img src="pages/page-09.jpg" loading="lazy" alt="Light After Dark — procession route map from Trafalgar Square to Embankment and light fixture designs">
+  </div>
+
+  <!-- 03 · Healing with Clay -->
+  <div class="page" id="project-03">
+    <img src="pages/page-10.jpg" loading="lazy" alt="Healing with Clay: Therapeutic Craft for Stroke Recovery — long section, clay workshop, courtyard and resident artist bedroom">
+  </div>
+
+  <!-- Back page -->
+  <div class="page portrait">
+    <img src="pages/page-11.jpg" loading="lazy" alt="Back page — Khushi Arora, 2022–2025">
+  </div>
+
+</main>
+
+</body>
+</html>
