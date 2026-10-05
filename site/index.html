@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Khushi Arora</title>
+  <meta name="description" content="Khushi Arora, architectural designer exploring tech." />
+  <link rel="icon" href="assets/logo-mouse.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-view="home">
+  <header class="top">
+    <a class="logo" href="#" aria-label="Khushi Arora, home">
+      <img src="assets/logo-mouse.png" alt="" />
+    </a>
+    <nav class="links" aria-label="Contact">
+      <a href="https://github.com/bear3100001" target="_blank" rel="noopener">Github</a>
+      <a href="https://www.linkedin.com/in/khushi-arora-b21164205" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="mailto:khushi071203@gmail.com">Email</a>
+    </nav>
+  </header>
+
+  <main class="stage">
+    <!-- Home: the sentence is the navigation. Each drawing is a button. -->
+    <h1 class="hero" id="hero">
+      <span class="line">
+        <em>Hi,</em>
+        <button class="glyph glyph--girl" popovertarget="profile" data-label="About me">
+          <img src="assets/icon-girl.png" alt="" /><span class="sr">About me</span>
+        </button>
+        <i class="br"></i>
+        <span>I'm Khushi Arora</span>
+        <button class="glyph glyph--pig" data-project="schedule-assistant">
+          <img src="assets/icon-guineapig.png" alt="" />
+        </button>
+        <i class="br"></i>
+      </span>
+      <span class="line">
+        <em>an</em>
+        <button class="glyph glyph--cat" data-project="consultant-door-sync">
+          <img src="assets/icon-cat.png" alt="" />
+        </button>
+        <span>architectural</span> <i class="br"></i><span>designer</span>
+        <button class="glyph glyph--faces" data-project="project-03">
+          <img src="assets/icon-faces.png" alt="" />
+        </button>
+        <i class="br"></i>
+      </span>
+      <span class="line">
+        <em>exploring</em>
+        <button class="glyph glyph--hands" data-project="project-04">
+          <img src="assets/icon-hands.png" alt="" />
+        </button>
+        <span>tech.</span>
+      </span>
+    </h1>
+
+    <!-- Project view, filled from projects.js -->
+    <article class="project" id="project" aria-live="polite"></article>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-home">
+      <p class="motto"><em>I find the problem and fix it.</em></p>
+      <p class="hint">Each drawing opens something</p>
+    </div>
+    <div class="foot-project">
+      <a class="back" href="#"><span aria-hidden="true">←</span> <em>Hi,</em><span class="back-text"> back to start</span></a>
+      <nav class="strip" id="strip" aria-label="Projects"></nav>
+    </div>
+  </footer>
+
+  <!-- Profile card, opened by the first drawing (native popover: Esc and outside-click close it) -->
+  <aside class="card" id="profile" popover aria-label="About Khushi">
+    <p class="card-kicker"><em>In short</em></p>
+    <dl>
+      <div>
+        <dt>Currently</dt>
+        <dd>Architectural Designer <span>at Populous, since 09.2025</span></dd>
+      </div>
+      <div>
+        <dt>Studied</dt>
+        <dd>Architecture BSc <span>University College London</span></dd>
+      </div>
+      <div>
+        <dt>Works in</dt>
+        <dd class="skills">Revit <i>.</i> AutoCAD <i>.</i> Rhino3D</dd>
+      </div>
+    </dl>
+    <a class="card-more" href="#/about">Full CV <span aria-hidden="true">→</span></a>
+    <button class="card-close" popovertarget="profile" popovertargetaction="hide" aria-label="Close">×</button>
+  </aside>
+
+  <script src="projects.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
