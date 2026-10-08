@@ -467,17 +467,13 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
   min-height: 52px;
 }
 
+.foot-home { justify-content: center; }
+
 body[data-view="home"] .foot-project,
 body[data-view="project"] .foot-home { display: none; }
 
 .motto { margin: 0; }
 
-.hint {
-  margin: 0;
-  font-size: 12px;
-  letter-spacing: 0.02em;
-  color: var(--ink-faint);
-}
 
 .foot-home,
 .foot-project { animation: fade 1s var(--ease) 0.35s both; }
@@ -583,7 +579,6 @@ html[data-dir="prev"]::view-transition-old(root) { animation-name: leave-x; }
   .links { gap: 16px; }
   .links a { font-size: 19px; }
   .motto { font-size: 19px; }
-  .hint { display: none; }
 
   .p-details > div { grid-template-columns: 1fr; gap: 6px; }
   .steps li { grid-template-columns: 1.6em 1fr; }
