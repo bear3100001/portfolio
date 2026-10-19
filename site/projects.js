@@ -74,10 +74,10 @@ window.PROJECTS = [
     created:
       "A ChatGPT skill with a computer-vision pipeline that reads both drawings, aligns them and maps the consultant's legend onto door parameters.",
     steps: [
-      ["Overlay", "Aligns the two plans using labels both drawings share, such as grid bubbles and zone names."],
-      ["Match", "Snaps each consultant marker to the nearest door tag and flags any that are ambiguous."],
-      ["Legend", "Maps each marker type to door parameters, e.g. red → Security Level SL3."],
-      ["Output", "Fills only the mapped columns of a copy of the BIMLink export, highlighting rows to review."],
+      ["Overlay", "Lines the consultant's plan up with the Revit plan."],
+      ["Match", "Links each consultant symbol to the nearest door."],
+      ["Legend", "Translates each symbol into door data."],
+      ["Output", "Fills in the BIMLink export, ready to import into Revit, with unclear doors highlighted."],
     ],
     tools: ["ChatGPT Skills", "Python", "Ideate BIMLink", "Revit"],
     outcome:
