@@ -77,12 +77,13 @@ window.PROJECTS = [
       ["Overlay", "Aligns the two plans using labels both drawings share, such as grid bubbles and zone names."],
       ["Match", "Snaps each consultant marker to the nearest door tag and flags any that are ambiguous."],
       ["Legend", "Maps each marker type to door parameters, e.g. red → Security Level SL3."],
-      ["Write back", "Fills only the mapped columns of a copy of the BIMLink export, highlighting rows to review."],
+      ["Output", "Fills only the mapped columns of a copy of the BIMLink export, highlighting rows to review."],
     ],
-    tools: ["ChatGPT Skills", "Python", "OpenCV", "PyMuPDF", "ezdxf", "Ideate BIMLink", "Revit"],
+    tools: ["ChatGPT Skills", "Python", "Ideate BIMLink", "Revit"],
     outcome:
       "The export keeps its IDs, headers and structure, so it imports straight back into Revit. Nothing is inferred: conflicts are flagged, never guessed. It works for fire, access and acoustic consultants too.",
     link: "https://github.com/bear3100001/chatgpt-plugins/tree/main/consultant-door-sync",
+    linkLabel: "Download skill",
   },
   {
     id: "project-03",
