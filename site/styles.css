@@ -380,6 +380,7 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
   text-wrap: pretty;
 }
 .p-details dd p { margin: 0; }
+.p-details dd .note { margin-top: 12px; }
 
 .steps {
   display: grid;

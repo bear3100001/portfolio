@@ -47,7 +47,7 @@ window.PROJECTS = [
     summary:
       "An AI skill that turns a Finish Requirements workbook into a coded interior finishes schedule, matching every row against the live Product Index on SharePoint.",
     problem:
-      "Finishes schedules are built by cross-referencing every requested finish against a product index by hand. On a stadium-scale project this is slow and repetitive, and one wrong code carries through the whole package.",
+      "Finishes schedules are built by manually cross-referencing every requested finish against supplier data sheets. On a stadium-scale project this is slow and repetitive, and one wrong code carries through the whole package.",
     created:
       "A ChatGPT skill backed by a two-stage Python engine. The model is used only for judgement, and every decision is validated by the script before anything is written.",
     steps: [
@@ -56,10 +56,12 @@ window.PROJECTS = [
       ["Decide", "The model rules MATCH, NO MATCH or INPUT ERROR using fixed filter and ranking rules."],
       ["Build", "Checks those decisions and writes a coded schedule with alternatives."],
     ],
+    note: "Available in two versions: one for ChatGPT on the web, and one that runs inside ChatGPT for Excel, building the schedule directly in your workbook.",
     tools: ["ChatGPT Skills", "Python", "openpyxl", "SharePoint", "Excel"],
     outcome:
       "Live across ChatGPT, Codex, the API and Atlas. Covers five finish categories (FL, LIN, PLS, PT, TRM) and runs end to end on demo data from a stadium project.",
     link: "https://github.com/bear3100001/chatgpt-plugins/tree/main/schedule-assistant",
+    linkLabel: "Download skill",
   },
   {
     id: "consultant-door-sync",

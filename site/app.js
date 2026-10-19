@@ -65,13 +65,13 @@
         <h2 class="p-title">${p.title}</h2>
         ${p.meta ? `<p class="p-meta">${p.meta}</p>` : ""}
         ${p.summary ? `<p class="p-summary">${p.summary}</p>` : ""}
-        ${p.link ? `<a class="p-link" href="${p.link}" target="_blank" rel="noopener">View the source ↗</a>` : ""}
+        ${p.link ? `<a class="p-link" href="${p.link}" target="_blank" rel="noopener">${p.linkLabel || "View the source"} ↗</a>` : ""}
       </div>`;
     if (p.draft) return head;
 
     const rows = [
       ["The problem", p.problem && `<p>${p.problem}</p>`],
-      ["What I made", p.created && `<p>${p.created}</p>${steps(p.steps)}`],
+      ["What I made", p.created && `<p>${p.created}</p>${steps(p.steps)}${p.note ? `<p class="note">${p.note}</p>` : ""}`],
       ["Built with", p.tools && p.tools.join(" <i>.</i> ")],
       ["Outcome", p.outcome && `<p>${p.outcome}</p>`],
     ].filter(([, html]) => html);

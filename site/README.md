@@ -24,7 +24,7 @@ Every project has its own link (e.g. `/#/schedule-assistant`), and the browser b
 ## Adding a project
 
 Open `projects.js`, find the `project-03` entry, remove `draft: true` and fill in `title`, `meta`, `summary`,
-`problem`, `created`, `steps`, `tools`, `outcome` and `link`. Leave out any field you don't need.
+`problem`, `created`, `steps`, `note`, `tools`, `outcome`, `link` and `linkLabel`. Leave out any field you don't need.
 
 To link a project to a different drawing, change `data-project="…"` on that drawing in `index.html`
 so it matches the project's `id`.
