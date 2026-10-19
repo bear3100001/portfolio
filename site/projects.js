@@ -14,13 +14,13 @@ window.PROFILE = {
       dates: "09.2025 – Present",
       role: "Architectural Designer at Populous",
       text: "After independently creating ChatGPT workflows to solve operational problems in the delivery process, I was selected for a small internal cohort testing Claude within Revit. There I developed and adapted MCPs to optimise workflows and gave practical feedback to support wider company adoption. I also embedded Runway into the existing visualisation workflow, accelerating image generation and design iteration. Alongside this, I led the sanitaryware package for King Salman Stadium from RIBA Stage 2–4, coordinating requirements across disciplines into a technically resolved package.",
-      tags: ["Revit", "ChatGPT Plugins", "Slay"],
+      tags: ["Revit", "Rhino", "Runway"],
     },
     {
       dates: "09.2024 – 06.2025",
       role: "Marketing for InterACT Festival",
-      text: "I produced digital marketing material in Adobe Creative Suite to promote a large-scale inter-university performing arts festival, driving engagement across UCL and partner institutions. I also led the festival's visual branding and content creation, establishing a consistent design language across digital and physical touchpoints.",
-      tags: ["Branding", "Making Art"],
+      text: "Managed multiple creative deliverables against competing deadlines and team requirements, while leading visual branding and content development across digital and physical touchpoints to ensure consistency with the overall event strategy. During the event, monitored and reported on live progress, coordinating with teams to flag issues, communicate updates and support the smooth delivery of the programme.",
+      tags: ["Branding", "Project Management", "Design"],
     },
     {
       dates: "07.2024 – 09.2024",
