@@ -150,7 +150,7 @@
           ${first ? `<header class="f-head"><span>${pad(si + 1)}</span><h3>${sec.title}</h3><p>${sec.subtitle || ""}</p></header>` : ""}
           ${pg.rows
             .map(
-              (row) => `<div class="pg${row.spread ? " pg--spread" : ""}${row.centreLast ? " pg--centre-last" : ""}" style="--cols:${row.cols || "1fr"}; align-items:${row.align || "start"}">
+              (row) => `<div class="pg${row.spread ? " pg--spread" : ""}${row.centreLast ? " pg--centre-last" : ""}${row.indent ? " pg--indent" : ""}" style="--cols:${row.cols || "1fr"}; align-items:${row.align || "start"}">
                 ${row.cells.map((cell) => `<div class="pg-col">${cell.map(folioBlock).join("")}</div>`).join("")}
               </div>`
             )

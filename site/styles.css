@@ -556,6 +556,8 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
 }
 .pg-col { display: grid; gap: clamp(14px, 2.4vh, 24px); align-content: start; min-width: 0; }
 .pg--spread > .pg-col { align-content: space-between; }
+/* Lines up with the section heading's title (after its number column) */
+.pg--indent { padding-left: calc(2.4rem + 8px); }
 .pg--centre-last > .pg-col { grid-template-rows: auto 1fr; align-content: stretch; }
 .pg--centre-last > .pg-col > :last-child { align-self: center; }
 /* discount the gap above, so text sits in the optical centre of the empty space */
