@@ -88,14 +88,18 @@ window.PROJECTS = [
   {
     /*
       A folio project: portfolio pages rebuilt as native layouts.
-      Each page has columns (a CSS grid template) holding blocks:
-        { img, alt }            image from assets/folio (<img>-l.jpg / <img>-s.jpg)
-        { title, sub }          heading
-        { meta: [] }            small italic lines (course, tutors, tools)
-        { date }                date line
-        { body: [] }            paragraphs (wrap words in <b> for emphasis)
-        { caption }             italic caption
-        { legend: [] }          numbered key, set in columns
+      A page is a list of rows. Each row has `cols` (a CSS grid template, desktop only),
+      `align` (start | center | end | stretch), `spread` (push a cell's blocks to its top and bottom)
+      and `cells`, each cell a list of blocks:
+        { img, alt, full?, vector?, hero?, fill?, narrow? }  image from assets/folio (<img>-l.jpg / -s.jpg);
+                                     full = file shown in the full-screen view (e.g. an .svg);
+                                     vector = show this .svg inline; hero = large, screen-height image;
+                                     fill = image fills its cell's height; narrow = centred at a reading width
+        { title, sub }      heading           { lead }        introductory paragraph
+        { meta: [] }        small italic lines { date }        date line
+        { body: [], cols? } paragraphs (cols: 2 sets them in two columns on desktop)
+        { caption }         italic caption    { legend: [] }  numbered key
+      On phones every row becomes one column, read top to bottom.
       A section's first page also shows the section heading.
     */
     id: "selected-works",
@@ -108,34 +112,30 @@ window.PROJECTS = [
         subtitle: "King Salman Stadium · RIBA Stage 2–4",
         pages: [
           {
-            cols: "1fr 1fr",
-            gap: "tight",
-            columns: [
-              [{ img: "pop-lounge-1", alt: "King Salman Stadium Royal Lounge, evening render" }],
-              [{ img: "pop-lounge-2", alt: "King Salman Stadium Royal Lounge, daytime render" }],
-            ],
+            rows: [{ cells: [[{ img: "pop-lounge", alt: "King Salman Stadium Royal Lounge, evening and daytime renders", hero: true }]] }],
             caption: "King Salman Stadium: Royal Lounge",
             date: "September – Present",
           },
           {
-            cols: "1fr 1fr",
-            columns: [
-              [{ img: "pop-changing-room", alt: "King Salman Stadium Players' Changing Room render" }],
-              [
-                { img: "pop-locker-drawings", alt: "Locker elevation and section details, 1:10" },
-                {
-                  row: "0.7fr 1fr",
-                  blocks: [
-                    { img: "pop-locker-axo", alt: "Axonometric of the locker cubicle" },
+            rows: [
+              {
+                cols: "0.75fr 1fr",
+                align: "stretch",
+                spread: true,
+                cells: [
+                  [{ img: "pop-changing-room", alt: "King Salman Stadium Players' Changing Room render" }],
+                  [
                     {
-                      body: [
-                        "The traditional locker design was adapted to subtly accommodate the required storage space for players while maintaining a clean and functional appearance. The design was also influenced by the project theme, taking inspiration from the concept of roots growing through soil. This idea was translated into the form and detailing of the locker, creating a connection between the overall theme and the user experience.",
-                        "The locker cubicle was developed in Revit through the creation of a detailed 3D model, allowing the design elements and spatial requirements to be accurately coordinated. The main locker structure was modelled using parametric families and assigned material properties, enabling components to be adjusted efficiently while maintaining design consistency. The internal storage requirements were integrated into the overall form of the cubicle rather than appearing as separate additions. The root-inspired elements were developed through the modelling of custom parametric families, using organic branching forms to create a visual connection between the locker structure and the project theme of natural growth and grounding.",
+                      row: "1.5fr 1fr",
+                      blocks: [
+                        { img: "pop-locker-drawings", full: "pop-locker-drawings.svg", alt: "Locker elevation and section details, 1:10" },
+                        { img: "pop-locker-axo", vector: true, alt: "Axonometric of the locker cubicle" },
                       ],
                     },
+                    { body: ["The traditional locker design was adapted to subtly accommodate the required storage space for players while maintaining a clean and functional appearance. The design was also influenced by the project theme, taking inspiration from the concept of roots growing through soil. This idea was translated into the form and detailing of the locker, creating a connection between the overall theme and the user experience.", "The locker cubicle was developed in Revit through the creation of a detailed 3D model, allowing the design elements and spatial requirements to be accurately coordinated. The main locker structure was modelled using parametric families and assigned material properties, enabling components to be adjusted efficiently while maintaining design consistency. The internal storage requirements were integrated into the overall form of the cubicle rather than appearing as separate additions. The root-inspired elements were developed through the modelling of custom parametric families, using organic branching forms to create a visual connection between the locker structure and the project theme of natural growth and grounding."], cols: 2 },
                   ],
-                },
-              ],
+                ],
+              },
             ],
             caption: "King Salman Stadium: Players' Changing Room",
             date: "September – Present",
@@ -147,67 +147,77 @@ window.PROJECTS = [
         subtitle: "A Museum of Constructed Belonging · Year 3, UG03",
         pages: [
           {
-            columns: [[{ img: "mv-interior", alt: "Maison Vestige interior render" }]],
+            rows: [{ cells: [[{ img: "mv-interior", alt: "Maison Vestige interior render", hero: true }]] }],
             caption: "Third Year Building Project",
             date: "Jan 2025 – Ongoing",
           },
           {
-            cols: "minmax(260px, 0.85fr) 2.4fr",
-            columns: [
-              [
-                { title: "Maison Vestige:", sub: "A Museum of Constructed Belonging" },
-                { meta: ["Year 3 Architecture BSc", "UG03 / Daniel Dream & Ifigenia Liangi", "Building Project (Rhino 3D / Adobe Suite / Blender)"] },
-                { date: "Sep 2024 – Dec 2024" },
-                {
-                  body: [
-                    "The project centres around the strained and complex relationship between immigrant workers and the French state, focusing on those whose contributions remain undocumented yet essential to the ongoing construction of Paris. The design aims to create a space that honours the knowledge, labour, and lived experiences of these communities. Drawing directly from their methods of building, inhabiting, and navigating the city. It is shaped by an understanding that their presence is not peripheral but foundational, and that the city itself carries the imprint of their hands. Through architecture, the project seeks to acknowledge this presence and to give form to a history that has often gone unrecorded, proposing a site where visibility, memory, and participation converge in the built environment.",
+            rows: [
+              {
+                cols: "1fr 1fr",
+                align: "end",
+                cells: [
+                  [{ title: "Maison Vestige:", sub: "A Museum of Constructed Belonging" }],
+                  [
+                    { lead: "The project centres around the strained and complex relationship between immigrant workers and the French state, focusing on those whose contributions remain undocumented yet essential to the ongoing construction of Paris." },
+                    { meta: ["Year 3 Architecture BSc", "UG03 / Daniel Dream & Ifigenia Liangi", "Building Project (Rhino 3D / Adobe Suite / Blender)"] },
+                    { date: "Sep 2024 – Dec 2024" },
                   ],
-                },
-              ],
-              [{ img: "mv-street", alt: "Maison Vestige at night, street view" }],
+                ],
+              },
+              { cells: [[{ img: "mv-street", alt: "Maison Vestige at night, street view", hero: true }]] },
+              { cells: [[{ body: ["The design aims to create a space that honours the knowledge, labour, and lived experiences of these communities. Drawing directly from their methods of building, inhabiting, and navigating the city. It is shaped by an understanding that their presence is not peripheral but foundational, and that the city itself carries the imprint of their hands. Through architecture, the project seeks to acknowledge this presence and to give form to a history that has often gone unrecorded, proposing a site where visibility, memory, and participation converge in the built environment."], cols: 2 }]] },
             ],
           },
           {
-            columns: [
-              [
-                { img: "mv-section", alt: "Maison Vestige key section" },
-                {
-                  caption: "Key Section",
-                  legend: [
+            rows: [
+              {
+                cols: "1fr minmax(220px, 17rem)",
+                align: "center",
+                cells: [
+                  [{ img: "mv-section", alt: "Maison Vestige key section" }],
+                  [{ caption: "Key Section" }, { legend: [
                     "Building entrance", "Lift", "Entrance to courtyard", "Still life exhibition (courtyard)", "Garden",
                     "Secondary drawing room", "Drawing room and lifts", "Entrance to first floor", "Garden", "Resident study",
                     "Still life exhibition space (3)", "Still life exhibition space con.", "Observatory gallery", "Passage space next to lift", "Observatory space",
-                  ],
-                },
-              ],
+                  ] }],
+                ],
+              },
             ],
             date: "Jan 2025 – Ongoing",
           },
           {
-            cols: "1fr 1fr",
-            columns: [
-              [
-                { title: "Technical Investigation into Vernacular Construction" },
-                { img: "tiv-collages", alt: "Collage studies of salvaged roof structures" },
-                { img: "tiv-roof-detail", alt: "Roof joinery detail drawing" },
-              ],
-              [
-                { img: "tiv-sketches", alt: "Sketchbook studies: figurative pattern and joinery at human scale" },
-                { img: "tiv-joinery-models", alt: "Speculative joinery model" },
-                { caption: "Speculative joinery model" },
-                {
-                  body: [
-                    "The building is constructed using materials salvaged from the restoration and maintenance of Paris' iconic landmarks. The Eiffel Tower has long stood as a symbol of French identity, while the recent and swift restoration of the Notre Dame Cathedral embodies the deep cultural value invested in preserving the city's architectural heritage. These monuments are routinely maintained through processes that generate significant amounts of waste material. Though some fragments are retained for study or exhibition, most are discarded.",
-                    "This project reclaims those discarded materials and assembles them in a different cultural vernacular. By incorporating fragments of these national symbols into a space that celebrates the histories of immigrant communities, the project challenges the hierarchies embedded within practices of preservation and authorship. It proposes a new architectural vernacular—one shaped by resourcefulness, memory, and belonging—where the act of reclamation becomes both a practical construction method and a symbolic gesture of resistance. Given the monumental scale of these structures, even the waste produced through their upkeep far exceeds what is required to realise this building. In doing so, the project transforms remnants of Paris' architectural legacy into carriers of overlooked histories, assembling them within a space that acknowledges those whose labour sustains the city yet whose stories remain largely unrecorded.",
-                    "The focus of my thesis was <b>how materials that hold significant historical and cultural value can be reclaimed and reassembled within a new architectural vernacular, examining how this process reframes narratives of authorship, belonging, and identity.</b>",
-                  ],
-                },
-              ],
+            rows: [
+              {
+                cols: "1fr 1fr",
+                align: "end",
+                cells: [
+                  [{ title: "Technical Investigation into Vernacular Construction" }],
+                  [{ body: ["The building is constructed using materials salvaged from the restoration and maintenance of Paris' iconic landmarks. The Eiffel Tower has long stood as a symbol of French identity, while the recent and swift restoration of the Notre Dame Cathedral embodies the deep cultural value invested in preserving the city's architectural heritage. These monuments are routinely maintained through processes that generate significant amounts of waste material. Though some fragments are retained for study or exhibition, most are discarded."] }],
+                ],
+              },
+              {
+                cols: "1fr 1fr",
+                align: "center",
+                cells: [
+                  [{ img: "tiv-collages", alt: "Collage studies of salvaged roof structures" }],
+                  [{ img: "tiv-sketches", alt: "Sketchbook studies: figurative pattern and joinery at human scale" }],
+                ],
+              },
+              {
+                cols: "1fr 1fr",
+                align: "center",
+                cells: [
+                  [{ img: "tiv-roof-detail", alt: "Roof joinery detail drawing" }],
+                  [{ body: ["This project reclaims those discarded materials and assembles them in a different cultural vernacular. By incorporating fragments of these national symbols into a space that celebrates the histories of immigrant communities, the project challenges the hierarchies embedded within practices of preservation and authorship. It proposes a new architectural vernacular—one shaped by resourcefulness, memory, and belonging—where the act of reclamation becomes both a practical construction method and a symbolic gesture of resistance. Given the monumental scale of these structures, even the waste produced through their upkeep far exceeds what is required to realise this building. In doing so, the project transforms remnants of Paris' architectural legacy into carriers of overlooked histories, assembling them within a space that acknowledges those whose labour sustains the city yet whose stories remain largely unrecorded."] }, { lead: "The focus of my thesis was <b>how materials that hold significant historical and cultural value can be reclaimed and reassembled within a new architectural vernacular, examining how this process reframes narratives of authorship, belonging, and identity.</b>" }],
+                ],
+              },
+              { cells: [[{ img: "tiv-joinery-models", alt: "Speculative joinery model", narrow: true }, { caption: "Speculative joinery model" }]] },
             ],
             date: "Jan 2025 – Ongoing",
           },
           {
-            columns: [[{ img: "mv-entrance", alt: "Entrance to the building at night" }]],
+            rows: [{ cells: [[{ img: "mv-entrance", alt: "Entrance to the building at night", hero: true }]] }],
             caption: "Entrance to the building at night",
             date: "Jan 2025 – Ongoing",
           },
@@ -218,20 +228,20 @@ window.PROJECTS = [
         subtitle: "Reimagining the City · Year 3, UG03",
         pages: [
           {
-            cols: "1.1fr 1fr",
-            columns: [
-              [
-                { meta: ["Year 3 Architecture BSc", "UG03 / Daniel Dream & Ifigenia Liangi", "Design Project (Rhino 3D / Adobe Suite / Blender / AutoCAD)"] },
-                { date: "Sep 2024 – Dec 2024" },
-                {
-                  body: [
-                    "This project explores the significance of Diwali, also known as the festival of lights, which is traditionally celebrated after sunset. Diwali symbolises the victory of light over darkness, and the evening prayers emphasise the sacred nature of the night. The concept for this project was inspired by <i>“Architecture in the Dark”</i> by Jonathan Hill, where he challenges the common association of night with fear, suggesting instead that it can be a time for contemplation and sanctity. This idea aligns with the spirit of Diwali, where the night becomes a space for reflection and celebration. Through this project, the route from Trafalgar Square to Embankment is reimagined for the occasion, merging Indian and British cultures as a reflection of my identity through the synchronisation of two architectural languages.",
-                    "Along this route, an existing water gate by the bank of the Thames becomes a focal point for the project. Water gates are also a prevalent feature in Varanasi, the holy city of India, where they serve as both spiritual thresholds and points of arrival and departure along the Ganges. Reimagined for this context, the York watergate marks the symbolic conclusion of the Diwali procession and serves as a critical architectural gesture that anchors the project. Its redesign draws influence from traditional Indian architecture, referencing intricate structures like the Mahabat Maqbara Palace. Through the layering of form, ornament and material the structure becomes both physically and symbolically rich as the complexity reflects its significance. The iterative design process involved gradually introducing levels of articulation which echoes the craftmanship in traditional South Asian architecture. The gate celebrates complexity, identity and a cultural convergence in a space that bridges two histories.",
+            rows: [
+              {
+                cols: "minmax(0, 34em) 1fr",
+                align: "stretch",
+                cells: [
+                  [
+                    { meta: ["Year 3 Architecture BSc", "UG03 / Daniel Dream & Ifigenia Liangi", "Design Project (Rhino 3D / Adobe Suite / Blender / AutoCAD)"] },
+                    { date: "Sep 2024 – Dec 2024" },
+                    { body: ["This project explores the significance of Diwali, also known as the festival of lights, which is traditionally celebrated after sunset. Diwali symbolises the victory of light over darkness, and the evening prayers emphasise the sacred nature of the night. The concept for this project was inspired by <i>“Architecture in the Dark”</i> by Jonathan Hill, where he challenges the common association of night with fear, suggesting instead that it can be a time for contemplation and sanctity. This idea aligns with the spirit of Diwali, where the night becomes a space for reflection and celebration. Through this project, the route from Trafalgar Square to Embankment is reimagined for the occasion, merging Indian and British cultures as a reflection of my identity through the synchronisation of two architectural languages.", "Along this route, an existing water gate by the bank of the Thames becomes a focal point for the project. Water gates are also a prevalent feature in Varanasi, the holy city of India, where they serve as both spiritual thresholds and points of arrival and departure along the Ganges. Reimagined for this context, the York watergate marks the symbolic conclusion of the Diwali procession and serves as a critical architectural gesture that anchors the project. Its redesign draws influence from traditional Indian architecture, referencing intricate structures like the Mahabat Maqbara Palace. Through the layering of form, ornament and material the structure becomes both physically and symbolically rich as the complexity reflects its significance. The iterative design process involved gradually introducing levels of articulation which echoes the craftmanship in traditional South Asian architecture. The gate celebrates complexity, identity and a cultural convergence in a space that bridges two histories."] },
                   ],
-                },
-                { img: "lad-drawings", alt: "Exploded drawings of the stair and the watergate's ornament" },
-              ],
-              [{ img: "lad-render", alt: "The York watergate at night" }],
+                  [{ img: "lad-render", alt: "The York watergate at night", fill: true }],
+                ],
+              },
+              { cells: [[{ img: "lad-drawings", alt: "Exploded drawings of the stair and the watergate's ornament", narrow: true }]] },
             ],
             date: "September – December 2024",
           },

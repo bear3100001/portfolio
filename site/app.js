@@ -110,21 +110,27 @@
   /* ── Folio: portfolio pages, rebuilt as native layouts, that stack as you scroll ──
      Each page is a sticky card. A card taller than the screen scrolls until its
      bottom is in view, then holds while the next card slides up over it. */
-  const folioImg = (name, alt) => `
-    <figure class="pg-fig"><picture>
-      <source media="(min-width: 901px)" srcset="assets/folio/${name}-l.jpg">
-      <img src="assets/folio/${name}-s.jpg" loading="lazy" decoding="async"
-        alt="${alt}" data-full="assets/folio/${name}-l.jpg">
+  const folioImg = (b) => {
+    const cls = `pg-fig${b.hero ? " pg-fig--hero" : ""}${b.fill ? " pg-fig--fill" : ""}${b.narrow ? " pg-fig--narrow" : ""}`;
+    const full = b.full ? `assets/folio/${b.full}` : b.vector ? `assets/folio/${b.img}.svg` : `assets/folio/${b.img}-l.jpg`;
+    const zoom = b.full || b.vector ? ' data-zoom="vector"' : "";
+    if (b.vector)
+      return `<figure class="${cls}"><img src="assets/folio/${b.img}.svg" loading="lazy" decoding="async" alt="${b.alt}" data-full="${full}"${zoom}></figure>`;
+    return `<figure class="${cls}"><picture>
+      <source media="(min-width: 901px)" srcset="assets/folio/${b.img}-l.jpg">
+      <img src="assets/folio/${b.img}-s.jpg" loading="lazy" decoding="async" alt="${b.alt}" data-full="${full}"${zoom}>
     </picture></figure>`;
+  };
 
   function folioBlock(b) {
     if (b.row) return `<div class="pg-row" style="grid-template-columns:${b.row}">${b.blocks.map(folioBlock).join("")}</div>`;
-    if (b.img) return folioImg(b.img, b.alt);
+    if (b.img) return folioImg(b);
     let html = "";
     if (b.title) html += `<h4 class="pg-title">${b.title}${b.sub ? `<span>${b.sub}</span>` : ""}</h4>`;
+    if (b.lead) html += `<p class="pg-lead">${b.lead}</p>`;
     if (b.meta) html += `<p class="pg-meta">${b.meta.join("<br>")}</p>`;
     if (b.date) html += `<p class="pg-date">${b.date}</p>`;
-    if (b.body) html += `<div class="pg-body">${b.body.map((t) => `<p>${t}</p>`).join("")}</div>`;
+    if (b.body) html += `<div class="pg-body${b.cols === 2 ? " pg-body--2" : ""}">${b.body.map((t) => `<p>${t}</p>`).join("")}</div>`;
     if (b.caption) html += `<p class="pg-caption">${b.caption}</p>`;
     if (b.legend) html += `<ol class="pg-legend">${b.legend.map((t) => `<li>${t}</li>`).join("")}</ol>`;
     return html;
@@ -137,26 +143,27 @@
       .map((sec, i) => `<li><a href="#" data-sec="${i}"><span>${pad(i + 1)}</span>${sec.title}</a></li>`)
       .join("");
     const cards = all
-      .map(({ sec, si, pg, first }) => {
-        const single = pg.columns.length === 1;
-        return `
+      .map(({ sec, si, pg, first }) => `
         <i class="f-mark" data-sec="${si}"></i>
         <article class="sheet" data-sec="${si}">
           ${first ? `<header class="f-head"><span>${pad(si + 1)}</span><h3>${sec.title}</h3><p>${sec.subtitle || ""}</p></header>` : ""}
-          <div class="pg${single ? " pg--single" : ""}${pg.gap === "tight" ? " pg--tight" : ""}" style="grid-template-columns:${pg.cols || "1fr"}">
-            ${pg.columns.map((col) => `<div class="pg-col">${col.map(folioBlock).join("")}</div>`).join("")}
-          </div>
+          ${pg.rows
+            .map(
+              (row) => `<div class="pg${row.spread ? " pg--spread" : ""}" style="--cols:${row.cols || "1fr"}; align-items:${row.align || "start"}">
+                ${row.cells.map((cell) => `<div class="pg-col">${cell.map(folioBlock).join("")}</div>`).join("")}
+              </div>`
+            )
+            .join("")}
           ${pg.caption || pg.date ? `<footer class="pg-foot"><span>${pg.caption || ""}</span><em>${pg.date || ""}</em></footer>` : ""}
-        </article>`;
-      })
+        </article>`)
       .join("");
 
+    // A slim bar replaces the side column, so the pages get the full width
     return `
-      <div class="p-intro" ${stagger(0)}>
+      <div class="p-intro f-bar" ${stagger(0)}>
         <img class="emblem" src="${iconFor(p.id)}" alt="">
         <p class="p-index"><em>${pad(n)}</em> / ${total}</p>
         <h2 class="p-title">${p.title}</h2>
-        ${p.meta ? `<p class="p-meta">${p.meta}</p>` : ""}
         <ol class="f-index">${index}</ol>
       </div>
       <div class="f-pages" ${stagger(1)}>${cards}</div>`;
@@ -171,12 +178,16 @@
 
     // Screen height, and each card's resting offset (negative when it is taller than the screen)
     const stick = sheets.map(() => 0);
+    const bar = view.querySelector(".f-bar");
+    let barH = 0;
     const measure = () => {
-      const h = view.clientHeight;
+      barH = getComputedStyle(bar).position === "sticky" ? bar.offsetHeight : 0;
+      const h = view.clientHeight - barH;
       view.style.setProperty("--ph", `${h}px`);
+      view.style.setProperty("--bar", `${barH}px`);
       sheets.forEach((s, i) => {
         stick[i] = Math.min(0, h - s.offsetHeight);
-        s.style.setProperty("--stick", `${stick[i]}px`);
+        s.style.setProperty("--stick", `${stick[i] + barH}px`);
       });
       onScroll();
     };
@@ -189,8 +200,8 @@
     let raf = 0;
     const tick = () => {
       raf = 0;
-      const top = view.getBoundingClientRect().top;
-      const h = view.clientHeight;
+      const top = view.getBoundingClientRect().top + barH;
+      const h = view.clientHeight - barH;
       let settling = false;
       let currentSec = sheets[0].dataset.sec;
       sheets.forEach((s, i) => {
@@ -215,7 +226,8 @@
       a.addEventListener("click", (e) => {
         e.preventDefault();
         const mark = view.querySelector(`.f-mark[data-sec="${a.dataset.sec}"]`);
-        view.scrollTo({ top: mark.offsetTop, behavior: reduceMotion.matches ? "auto" : "smooth" });
+        const y = view.scrollTop + mark.getBoundingClientRect().top - view.getBoundingClientRect().top - barH;
+        view.scrollTo({ top: y, behavior: reduceMotion.matches ? "auto" : "smooth" });
       })
     );
 
@@ -224,6 +236,7 @@
       view.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
       view.style.removeProperty("--ph");
+      view.style.removeProperty("--bar");
       folioCleanup = () => {};
     };
   }
@@ -244,6 +257,7 @@
     if (!img) return;
     lbImg.src = img.dataset.full;
     lbImg.alt = img.alt;
+    lightbox.classList.toggle("is-vector", img.dataset.zoom === "vector");
     lightbox.showModal();
   });
 
