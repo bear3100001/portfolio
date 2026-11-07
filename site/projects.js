@@ -127,7 +127,7 @@ window.PROJECTS = [
                 align: "stretch",
                 spread: true,
                 cells: [
-                  [{ img: "pop-changing-room", alt: "King Salman Stadium Players' Changing Room render" }],
+                  [{ img: "pop-changing-room", alt: "Stadium Project Players' Changing Room render" }],
                   [
                     {
                       row: "1.5fr 1fr",
@@ -141,7 +141,7 @@ window.PROJECTS = [
                 ],
               },
             ],
-            caption: "King Salman Stadium: Players' Changing Room",
+            caption: "Stadium Project: Players' Changing Room",
             date: "September – Present",
           },
         ],
