@@ -31,10 +31,13 @@ so it matches the project's `id`.
 
 ## Selected Works (portfolio pages)
 
-The faces drawing opens a scrolling view of portfolio pages, defined by the `selected-works` entry in `projects.js`
-(`type: "folio"`). Each section has a `title`, `subtitle` and a list of `pages`: `[file name, description, "portrait"?]`.
-Page images live in `assets/folio/` as `<name>-l.jpg` (large, 2400 px wide spreads / 1300 px portrait) and
-`<name>-s.jpg` (small, for phones). Click a page on the site to view it full-screen; click again to zoom.
+The faces drawing opens the portfolio: pages rebuilt as native layouts (images plus Instrument Serif text)
+that stack as you scroll. Content is the `selected-works` entry in `projects.js` (`type: "folio"`):
+sections hold pages, a page holds `columns` (a CSS grid via `cols`) of blocks such as
+`{ img }`, `{ title, sub }`, `{ meta: [] }`, `{ date }`, `{ body: [] }`, `{ caption }` and `{ legend: [] }`,
+plus an optional page `caption` and `date` for the footer line. The block types are documented above the entry.
+Images live in `assets/folio/` as `<name>-l.jpg` (desktop) and `<name>-s.jpg` (phones).
+Click an image on the site to view it full-screen; click again to zoom.
 
 ## Editing the CV
 

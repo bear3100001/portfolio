@@ -107,34 +107,48 @@
       </dl>`;
   }
 
-  /* ── Folio: a scrolling sequence of portfolio pages ── */
-  const SIZES = { spread: [2400, 1697], portrait: [1300, 1839] };
+  /* ── Folio: portfolio pages, rebuilt as native layouts, that stack as you scroll ──
+     Each page is a sticky card. A card taller than the screen scrolls until its
+     bottom is in view, then holds while the next card slides up over it. */
+  const folioImg = (name, alt) => `
+    <figure class="pg-fig"><picture>
+      <source media="(min-width: 901px)" srcset="assets/folio/${name}-l.jpg">
+      <img src="assets/folio/${name}-s.jpg" loading="lazy" decoding="async"
+        alt="${alt}" data-full="assets/folio/${name}-l.jpg">
+    </picture></figure>`;
+
+  function folioBlock(b) {
+    if (b.row) return `<div class="pg-row" style="grid-template-columns:${b.row}">${b.blocks.map(folioBlock).join("")}</div>`;
+    if (b.img) return folioImg(b.img, b.alt);
+    let html = "";
+    if (b.title) html += `<h4 class="pg-title">${b.title}${b.sub ? `<span>${b.sub}</span>` : ""}</h4>`;
+    if (b.meta) html += `<p class="pg-meta">${b.meta.join("<br>")}</p>`;
+    if (b.date) html += `<p class="pg-date">${b.date}</p>`;
+    if (b.body) html += `<div class="pg-body">${b.body.map((t) => `<p>${t}</p>`).join("")}</div>`;
+    if (b.caption) html += `<p class="pg-caption">${b.caption}</p>`;
+    if (b.legend) html += `<ol class="pg-legend">${b.legend.map((t) => `<li>${t}</li>`).join("")}</ol>`;
+    return html;
+  }
 
   function folioTemplate(p) {
     const n = projects.indexOf(p) + 1;
+    const all = p.sections.flatMap((sec, si) => sec.pages.map((pg, pi) => ({ sec, si, pg, first: pi === 0 })));
     const index = p.sections
       .map((sec, i) => `<li><a href="#" data-sec="${i}"><span>${pad(i + 1)}</span>${sec.title}</a></li>`)
       .join("");
-    const sections = p.sections
-      .map(
-        (sec, i) => `<section class="f-sec" id="f-sec-${i}" data-sec="${i}">
-          ${sec.bare ? "" : `<header class="f-head"><span>${pad(i + 1)}</span><h3>${sec.title}</h3><p>${sec.subtitle || ""}</p></header>`}
-          ${sec.pages
-            .map(([name, alt, shape = "spread"]) => {
-              const [w, h] = SIZES[shape];
-              return `<figure class="sheet sheet--${shape}">
-                <button type="button" class="sheet-open" aria-label="View larger: ${alt}">
-                  <img src="assets/folio/${name}-s.jpg"
-                       srcset="assets/folio/${name}-s.jpg ${shape === "portrait" ? 700 : 1200}w, assets/folio/${name}-l.jpg ${w}w"
-                       sizes="(max-width: 900px) 92vw, 60vw"
-                       width="${w}" height="${h}" loading="lazy" decoding="async" alt="${alt}"
-                       data-full="assets/folio/${name}-l.jpg">
-                </button>
-              </figure>`;
-            })
-            .join("")}
-        </section>`
-      )
+    const cards = all
+      .map(({ sec, si, pg, first }) => {
+        const single = pg.columns.length === 1;
+        return `
+        <i class="f-mark" data-sec="${si}"></i>
+        <article class="sheet" data-sec="${si}">
+          ${first ? `<header class="f-head"><span>${pad(si + 1)}</span><h3>${sec.title}</h3><p>${sec.subtitle || ""}</p></header>` : ""}
+          <div class="pg${single ? " pg--single" : ""}${pg.gap === "tight" ? " pg--tight" : ""}" style="grid-template-columns:${pg.cols || "1fr"}">
+            ${pg.columns.map((col) => `<div class="pg-col">${col.map(folioBlock).join("")}</div>`).join("")}
+          </div>
+          ${pg.caption || pg.date ? `<footer class="pg-foot"><span>${pg.caption || ""}</span><em>${pg.date || ""}</em></footer>` : ""}
+        </article>`;
+      })
       .join("");
 
     return `
@@ -145,44 +159,73 @@
         ${p.meta ? `<p class="p-meta">${p.meta}</p>` : ""}
         <ol class="f-index">${index}</ol>
       </div>
-      <div class="f-pages" ${stagger(1)}>${sections}</div>`;
+      <div class="f-pages" ${stagger(1)}>${cards}</div>`;
   }
 
-  // Pages rise in as they scroll into view; the index follows the section being read.
-  let folioObservers = [];
+  let folioCleanup = () => {};
   function initFolio() {
-    folioObservers.forEach((o) => o.disconnect());
-    folioObservers = [];
-    const sheets = view.querySelectorAll(".sheet");
-    const links = view.querySelectorAll(".f-index a");
+    folioCleanup();
+    const sheets = [...view.querySelectorAll(".sheet")];
+    const links = [...view.querySelectorAll(".f-index a")];
     if (!sheets.length) return;
 
-    if (!("IntersectionObserver" in window)) return sheets.forEach((s) => s.classList.add("is-in"));
+    // Screen height, and each card's resting offset (negative when it is taller than the screen)
+    const stick = sheets.map(() => 0);
+    const measure = () => {
+      const h = view.clientHeight;
+      view.style.setProperty("--ph", `${h}px`);
+      sheets.forEach((s, i) => {
+        stick[i] = Math.min(0, h - s.offsetHeight);
+        s.style.setProperty("--stick", `${stick[i]}px`);
+      });
+      onScroll();
+    };
+    const ro = new ResizeObserver(measure);
+    ro.observe(view);
+    sheets.forEach((s) => ro.observe(s));
 
-    const reveal = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add("is-in"), reveal.unobserve(e.target))),
-      { root: view, rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
-    );
-    sheets.forEach((s) => reveal.observe(s));
-
-    const spy = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return;
-          links.forEach((a) => a.classList.toggle("is-current", a.dataset.sec === e.target.dataset.sec));
-        }),
-      { root: view, rootMargin: "-35% 0px -60% 0px" }
-    );
-    view.querySelectorAll(".f-sec").forEach((sec) => spy.observe(sec));
-    links[0]?.classList.add("is-current");
-    folioObservers = [reveal, spy];
+    // Eased depth: each covered page recedes in proportion to how far the next has risen
+    const eased = sheets.map(() => 0);
+    let raf = 0;
+    const tick = () => {
+      raf = 0;
+      const top = view.getBoundingClientRect().top;
+      const h = view.clientHeight;
+      let settling = false;
+      let currentSec = sheets[0].dataset.sec;
+      sheets.forEach((s, i) => {
+        const next = sheets[i + 1];
+        // Fully covered once the next card's top reaches the top of the screen
+        const rest = next ? next.getBoundingClientRect().top - top : h;
+        const target = next ? Math.min(1, Math.max(0, 1 - rest / h)) : 0;
+        eased[i] += (target - eased[i]) * (reduceMotion.matches ? 1 : 0.2);
+        if (Math.abs(target - eased[i]) > 0.001) settling = true;
+        else eased[i] = target;
+        s.style.setProperty("--cover", eased[i].toFixed(4));
+        if (s.getBoundingClientRect().top - top < h * 0.5) currentSec = s.dataset.sec;
+      });
+      links.forEach((a) => a.classList.toggle("is-current", a.dataset.sec === currentSec));
+      if (settling) raf = requestAnimationFrame(tick);
+    };
+    const onScroll = () => raf || (raf = requestAnimationFrame(tick));
+    view.addEventListener("scroll", onScroll, { passive: true });
+    measure();
 
     links.forEach((a) =>
       a.addEventListener("click", (e) => {
         e.preventDefault();
-        view.querySelector(`#f-sec-${a.dataset.sec}`).scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "start" });
+        const mark = view.querySelector(`.f-mark[data-sec="${a.dataset.sec}"]`);
+        view.scrollTo({ top: mark.offsetTop, behavior: reduceMotion.matches ? "auto" : "smooth" });
       })
     );
+
+    folioCleanup = () => {
+      ro.disconnect();
+      view.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
+      view.style.removeProperty("--ph");
+      folioCleanup = () => {};
+    };
   }
 
   /* ── Lightbox: one page full-screen; click to zoom into detail ── */
@@ -197,9 +240,8 @@
   });
   lightbox.addEventListener("close", () => lightbox.classList.remove("is-zoomed"));
   view.addEventListener("click", (e) => {
-    const btn = e.target.closest(".sheet-open");
-    if (!btn) return;
-    const img = btn.querySelector("img");
+    const img = e.target.closest("img[data-full]");
+    if (!img) return;
     lbImg.src = img.dataset.full;
     lbImg.alt = img.alt;
     lightbox.showModal();
@@ -215,6 +257,7 @@
     body.dataset.view = id ? "project" : "home";
 
     if (id === "about") {
+      folioCleanup();
       view.className = "project is-about";
       view.innerHTML = aboutTemplate();
       document.title = "About · Khushi Arora";
@@ -222,11 +265,13 @@
       const p = byId(id);
       const folio = p.type === "folio";
       view.className = `project${p.draft ? " is-draft" : ""}${folio ? " is-folio" : ""}`;
+      folioCleanup();
       view.innerHTML = folio ? folioTemplate(p) : template(p);
       view.scrollTop = 0;
       if (folio) initFolio();
       document.title = `${p.draft ? "Coming soon" : p.title} · Khushi Arora`;
     } else {
+      folioCleanup();
       view.innerHTML = "";
       document.title = "Khushi Arora";
     }
