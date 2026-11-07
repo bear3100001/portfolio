@@ -566,13 +566,17 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
   height: auto;
   cursor: zoom-in;
 }
-/* Hero renders: as large as the width allows, up to just over a screen tall */
-.pg-fig--hero img {
+/* Hero renders: the full width of the page, at their own proportions.
+   A render taller than the screen is revealed as you scroll, then holds. */
+.pg-fig--hero img { width: 100%; height: auto; }
+/* Fit: as large as fits on one screen */
+.pg-fig--fit img {
   width: auto;
   max-width: 100%;
   max-height: calc(var(--ph, 100vh) * 1.04);
   margin: 0 auto;
 }
+.pg-fig--centre { width: 86%; justify-self: center; }
 /* Fill: the image fills the full height of its row, set by the text beside it */
 .pg-fig--fill { position: relative; height: 100%; min-height: 360px; }
 .pg-fig--fill picture,
@@ -829,7 +833,8 @@ html[data-dir="prev"]::view-transition-old(root) { animation-name: leave-x; }
   .pg { grid-template-columns: 1fr; align-items: start !important; }
   .pg-row { grid-template-columns: 1fr !important; }
   .pg-row > .pg-fig + .pg-fig { width: 78%; justify-self: center; }
-  .pg-fig--hero img { width: 100%; max-height: none; }
+  .pg-fig--fit img { width: 100%; max-height: none; }
+  .pg-fig--centre { width: 100%; }
   .pg-col:has(> .pg-fig--fill) { display: grid; }
   .pg-fig--fill { height: auto; min-height: 0; }
   .pg-fig--fill picture, .pg-fig--fill img { position: static; height: auto; }

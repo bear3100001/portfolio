@@ -91,10 +91,12 @@ window.PROJECTS = [
       A page is a list of rows. Each row has `cols` (a CSS grid template, desktop only),
       `align` (start | center | end | stretch), `spread` (push a cell's blocks to its top and bottom)
       and `cells`, each cell a list of blocks:
-        { img, alt, full?, vector?, hero?, fill?, narrow? }  image from assets/folio (<img>-l.jpg / -s.jpg);
+        { img, alt, full?, vector?, hero?, fit?, fill?, narrow?, centre? }  image from assets/folio (<img>-l.jpg / -s.jpg);
                                      full = file shown in the full-screen view (e.g. an .svg);
-                                     vector = show this .svg inline; hero = large, screen-height image;
-                                     fill = image fills its cell's height; narrow = centred at a reading width
+                                     vector = show this .svg inline; hero = full width, revealed as you scroll;
+                                     fit = as large as fits on one screen;
+                                     fill = image fills its cell's height; narrow = centred at a reading width;
+                                     centre = centred within its column
         { title, sub }      heading           { lead }        introductory paragraph
         { meta: [] }        small italic lines { date }        date line
         { body: [], cols? } paragraphs (cols: 2 sets them in two columns on desktop)
@@ -165,7 +167,7 @@ window.PROJECTS = [
                   ],
                 ],
               },
-              { cells: [[{ img: "mv-street", alt: "Maison Vestige at night, street view", hero: true }]] },
+              { cells: [[{ img: "mv-street", alt: "Maison Vestige at night, street view", fit: true }]] },
               { cells: [[{ body: ["The design aims to create a space that honours the knowledge, labour, and lived experiences of these communities. Drawing directly from their methods of building, inhabiting, and navigating the city. It is shaped by an understanding that their presence is not peripheral but foundational, and that the city itself carries the imprint of their hands. Through architecture, the project seeks to acknowledge this presence and to give form to a history that has often gone unrecorded, proposing a site where visibility, memory, and participation converge in the built environment."], cols: 2 }]] },
             ],
           },
@@ -190,29 +192,18 @@ window.PROJECTS = [
             rows: [
               {
                 cols: "1fr 1fr",
-                align: "end",
                 cells: [
-                  [{ title: "Technical Investigation into Vernacular Construction" }],
-                  [{ body: ["The building is constructed using materials salvaged from the restoration and maintenance of Paris' iconic landmarks. The Eiffel Tower has long stood as a symbol of French identity, while the recent and swift restoration of the Notre Dame Cathedral embodies the deep cultural value invested in preserving the city's architectural heritage. These monuments are routinely maintained through processes that generate significant amounts of waste material. Though some fragments are retained for study or exhibition, most are discarded."] }],
+                  [
+                    { title: "Technical Investigation into Vernacular Construction" },
+                    { img: "tiv-collages", alt: "Collage studies of salvaged roof structures" },
+                    { img: "tiv-roof-detail", alt: "Roof joinery detail drawing" },
+                  ],
+                  [
+                    { img: "tiv-sketches", alt: "Sketchbook studies: figurative pattern and joinery at human scale" },
+                    { body: ["The building is constructed using materials salvaged from the restoration and maintenance of Paris' iconic landmarks. The Eiffel Tower has long stood as a symbol of French identity, while the recent and swift restoration of the Notre Dame Cathedral embodies the deep cultural value invested in preserving the city's architectural heritage. These monuments are routinely maintained through processes that generate significant amounts of waste material. Though some fragments are retained for study or exhibition, most are discarded.", "This project reclaims those discarded materials and assembles them in a different cultural vernacular. By incorporating fragments of these national symbols into a space that celebrates the histories of immigrant communities, the project challenges the hierarchies embedded within practices of preservation and authorship. It proposes a new architectural vernacular—one shaped by resourcefulness, memory, and belonging—where the act of reclamation becomes both a practical construction method and a symbolic gesture of resistance. Given the monumental scale of these structures, even the waste produced through their upkeep far exceeds what is required to realise this building. In doing so, the project transforms remnants of Paris' architectural legacy into carriers of overlooked histories, assembling them within a space that acknowledges those whose labour sustains the city yet whose stories remain largely unrecorded."] },
+                  ],
                 ],
               },
-              {
-                cols: "1fr 1fr",
-                align: "center",
-                cells: [
-                  [{ img: "tiv-collages", alt: "Collage studies of salvaged roof structures" }],
-                  [{ img: "tiv-sketches", alt: "Sketchbook studies: figurative pattern and joinery at human scale" }],
-                ],
-              },
-              {
-                cols: "1fr 1fr",
-                align: "center",
-                cells: [
-                  [{ img: "tiv-roof-detail", alt: "Roof joinery detail drawing" }],
-                  [{ body: ["This project reclaims those discarded materials and assembles them in a different cultural vernacular. By incorporating fragments of these national symbols into a space that celebrates the histories of immigrant communities, the project challenges the hierarchies embedded within practices of preservation and authorship. It proposes a new architectural vernacular—one shaped by resourcefulness, memory, and belonging—where the act of reclamation becomes both a practical construction method and a symbolic gesture of resistance. Given the monumental scale of these structures, even the waste produced through their upkeep far exceeds what is required to realise this building. In doing so, the project transforms remnants of Paris' architectural legacy into carriers of overlooked histories, assembling them within a space that acknowledges those whose labour sustains the city yet whose stories remain largely unrecorded."] }, { lead: "The focus of my thesis was <b>how materials that hold significant historical and cultural value can be reclaimed and reassembled within a new architectural vernacular, examining how this process reframes narratives of authorship, belonging, and identity.</b>" }],
-                ],
-              },
-              { cells: [[{ img: "tiv-joinery-models", alt: "Speculative joinery model", narrow: true }, { caption: "Speculative joinery model" }]] },
             ],
             date: "Jan 2025 – Ongoing",
           },
@@ -236,12 +227,12 @@ window.PROJECTS = [
                   [
                     { meta: ["Year 3 Architecture BSc", "UG03 / Daniel Dream & Ifigenia Liangi", "Design Project (Rhino 3D / Adobe Suite / Blender / AutoCAD)"] },
                     { date: "Sep 2024 – Dec 2024" },
-                    { body: ["This project explores the significance of Diwali, also known as the festival of lights, which is traditionally celebrated after sunset. Diwali symbolises the victory of light over darkness, and the evening prayers emphasise the sacred nature of the night. The concept for this project was inspired by <i>“Architecture in the Dark”</i> by Jonathan Hill, where he challenges the common association of night with fear, suggesting instead that it can be a time for contemplation and sanctity. This idea aligns with the spirit of Diwali, where the night becomes a space for reflection and celebration. Through this project, the route from Trafalgar Square to Embankment is reimagined for the occasion, merging Indian and British cultures as a reflection of my identity through the synchronisation of two architectural languages.", "Along this route, an existing water gate by the bank of the Thames becomes a focal point for the project. Water gates are also a prevalent feature in Varanasi, the holy city of India, where they serve as both spiritual thresholds and points of arrival and departure along the Ganges. Reimagined for this context, the York watergate marks the symbolic conclusion of the Diwali procession and serves as a critical architectural gesture that anchors the project. Its redesign draws influence from traditional Indian architecture, referencing intricate structures like the Mahabat Maqbara Palace. Through the layering of form, ornament and material the structure becomes both physically and symbolically rich as the complexity reflects its significance. The iterative design process involved gradually introducing levels of articulation which echoes the craftmanship in traditional South Asian architecture. The gate celebrates complexity, identity and a cultural convergence in a space that bridges two histories."] },
+{ body: ["This project explores the significance of Diwali, also known as the festival of lights, which is traditionally celebrated after sunset. Diwali symbolises the victory of light over darkness, and the evening prayers emphasise the sacred nature of the night. The concept for this project was inspired by <i>“Architecture in the Dark”</i> by Jonathan Hill, where he challenges the common association of night with fear, suggesting instead that it can be a time for contemplation and sanctity. This idea aligns with the spirit of Diwali, where the night becomes a space for reflection and celebration. Through this project, the route from Trafalgar Square to Embankment is reimagined for the occasion, merging Indian and British cultures as a reflection of my identity through the synchronisation of two architectural languages.", "Along this route, an existing water gate by the bank of the Thames becomes a focal point for the project. Water gates are also a prevalent feature in Varanasi, the holy city of India, where they serve as both spiritual thresholds and points of arrival and departure along the Ganges. Reimagined for this context, the York watergate marks the symbolic conclusion of the Diwali procession and serves as a critical architectural gesture that anchors the project. Its redesign draws influence from traditional Indian architecture, referencing intricate structures like the Mahabat Maqbara Palace. Through the layering of form, ornament and material the structure becomes both physically and symbolically rich as the complexity reflects its significance. The iterative design process involved gradually introducing levels of articulation which echoes the craftmanship in traditional South Asian architecture. The gate celebrates complexity, identity and a cultural convergence in a space that bridges two histories."] },
+                    { img: "lad-drawings", alt: "Exploded drawings of the stair and the watergate's ornament", centre: true },
                   ],
                   [{ img: "lad-render", alt: "The York watergate at night", fill: true }],
                 ],
               },
-              { cells: [[{ img: "lad-drawings", alt: "Exploded drawings of the stair and the watergate's ornament", narrow: true }]] },
             ],
             date: "September – December 2024",
           },

@@ -111,7 +111,8 @@
      Each page is a sticky card. A card taller than the screen scrolls until its
      bottom is in view, then holds while the next card slides up over it. */
   const folioImg = (b) => {
-    const cls = `pg-fig${b.hero ? " pg-fig--hero" : ""}${b.fill ? " pg-fig--fill" : ""}${b.narrow ? " pg-fig--narrow" : ""}`;
+    const mods = ["hero", "fit", "fill", "narrow", "centre"].filter((m) => b[m]).map((m) => ` pg-fig--${m}`).join("");
+    const cls = `pg-fig${mods}`;
     const full = b.full ? `assets/folio/${b.full}` : b.vector ? `assets/folio/${b.img}.svg` : `assets/folio/${b.img}-l.jpg`;
     const zoom = b.full || b.vector ? ' data-zoom="vector"' : "";
     if (b.vector)
