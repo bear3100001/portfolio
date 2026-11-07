@@ -641,6 +641,7 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
 }
 .pg-body b { font-weight: 400; color: var(--ink); }
 .pg-body--2 { display: block; columns: 2; column-gap: clamp(24px, 3vw, 48px); }
+.pg-body--wide p { max-width: none; }
 .pg-body--2 p { max-width: none; margin-bottom: 0.85em; }
 
 .pg-caption {

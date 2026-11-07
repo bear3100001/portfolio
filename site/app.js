@@ -131,7 +131,7 @@
     if (b.lead) html += `<p class="pg-lead">${b.lead}</p>`;
     if (b.meta) html += `<p class="pg-meta">${b.meta.join("<br>")}</p>`;
     if (b.date) html += `<p class="pg-date">${b.date}</p>`;
-    if (b.body) html += `<div class="pg-body${b.cols === 2 ? " pg-body--2" : ""}">${b.body.map((t) => `<p>${t}</p>`).join("")}</div>`;
+    if (b.body) html += `<div class="pg-body${b.cols === 2 ? " pg-body--2" : ""}${b.wide ? " pg-body--wide" : ""}">${b.body.map((t) => `<p>${t}</p>`).join("")}</div>`;
     if (b.caption) html += `<p class="pg-caption">${b.caption}</p>`;
     if (b.legend) html += `<ol class="pg-legend">${b.legend.map((t) => `<li>${t}</li>`).join("")}</ol>`;
     return html;

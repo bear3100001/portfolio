@@ -100,7 +100,8 @@ window.PROJECTS = [
                                      centre = centred within its column
         { title, sub }      heading           { lead }        introductory paragraph
         { meta: [] }        small italic lines { date }        date line
-        { body: [], cols? } paragraphs (cols: 2 sets them in two columns on desktop)
+        { body: [], cols?, wide? } paragraphs (cols: 2 sets them in two columns on desktop;
+                            wide: true lets lines run the full width of the page)
         { caption }         italic caption    { legend: [] }  numbered key
       On phones every row becomes one column, read top to bottom.
       A section's first page also shows the section heading.
@@ -167,7 +168,7 @@ window.PROJECTS = [
           {
             rows: [
               { cells: [[{ img: "mv-street", alt: "Maison Vestige at night, street view", hero: true }]] },
-              { cols: "minmax(0, 34em) 1fr", cells: [[{ body: ["The design aims to create a space that honours the knowledge, labour, and lived experiences of these communities. Drawing directly from their methods of building, inhabiting, and navigating the city. It is shaped by an understanding that their presence is not peripheral but foundational, and that the city itself carries the imprint of their hands. Through architecture, the project seeks to acknowledge this presence and to give form to a history that has often gone unrecorded, proposing a site where visibility, memory, and participation converge in the built environment."] }], []] },
+              { cells: [[{ body: ["The design aims to create a space that honours the knowledge, labour, and lived experiences of these communities. Drawing directly from their methods of building, inhabiting, and navigating the city. It is shaped by an understanding that their presence is not peripheral but foundational, and that the city itself carries the imprint of their hands. Through architecture, the project seeks to acknowledge this presence and to give form to a history that has often gone unrecorded, proposing a site where visibility, memory, and participation converge in the built environment."], wide: true }]] },
             ],
           },
           {
