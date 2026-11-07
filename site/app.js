@@ -107,6 +107,104 @@
       </dl>`;
   }
 
+  /* ── Folio: a scrolling sequence of portfolio pages ── */
+  const SIZES = { spread: [2400, 1697], portrait: [1300, 1839] };
+
+  function folioTemplate(p) {
+    const n = projects.indexOf(p) + 1;
+    const index = p.sections
+      .map((sec, i) => `<li><a href="#" data-sec="${i}"><span>${pad(i + 1)}</span>${sec.title}</a></li>`)
+      .join("");
+    const sections = p.sections
+      .map(
+        (sec, i) => `<section class="f-sec" id="f-sec-${i}" data-sec="${i}">
+          ${sec.bare ? "" : `<header class="f-head"><span>${pad(i + 1)}</span><h3>${sec.title}</h3><p>${sec.subtitle || ""}</p></header>`}
+          ${sec.pages
+            .map(([name, alt, shape = "spread"]) => {
+              const [w, h] = SIZES[shape];
+              return `<figure class="sheet sheet--${shape}">
+                <button type="button" class="sheet-open" aria-label="View larger: ${alt}">
+                  <img src="assets/folio/${name}-s.jpg"
+                       srcset="assets/folio/${name}-s.jpg ${shape === "portrait" ? 700 : 1200}w, assets/folio/${name}-l.jpg ${w}w"
+                       sizes="(max-width: 900px) 92vw, 60vw"
+                       width="${w}" height="${h}" loading="lazy" decoding="async" alt="${alt}"
+                       data-full="assets/folio/${name}-l.jpg">
+                </button>
+              </figure>`;
+            })
+            .join("")}
+        </section>`
+      )
+      .join("");
+
+    return `
+      <div class="p-intro" ${stagger(0)}>
+        <img class="emblem" src="${iconFor(p.id)}" alt="">
+        <p class="p-index"><em>${pad(n)}</em> / ${total}</p>
+        <h2 class="p-title">${p.title}</h2>
+        ${p.meta ? `<p class="p-meta">${p.meta}</p>` : ""}
+        <ol class="f-index">${index}</ol>
+      </div>
+      <div class="f-pages" ${stagger(1)}>${sections}</div>`;
+  }
+
+  // Pages rise in as they scroll into view; the index follows the section being read.
+  let folioObservers = [];
+  function initFolio() {
+    folioObservers.forEach((o) => o.disconnect());
+    folioObservers = [];
+    const sheets = view.querySelectorAll(".sheet");
+    const links = view.querySelectorAll(".f-index a");
+    if (!sheets.length) return;
+
+    if (!("IntersectionObserver" in window)) return sheets.forEach((s) => s.classList.add("is-in"));
+
+    const reveal = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add("is-in"), reveal.unobserve(e.target))),
+      { root: view, rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+    );
+    sheets.forEach((s) => reveal.observe(s));
+
+    const spy = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          links.forEach((a) => a.classList.toggle("is-current", a.dataset.sec === e.target.dataset.sec));
+        }),
+      { root: view, rootMargin: "-35% 0px -60% 0px" }
+    );
+    view.querySelectorAll(".f-sec").forEach((sec) => spy.observe(sec));
+    links[0]?.classList.add("is-current");
+    folioObservers = [reveal, spy];
+
+    links.forEach((a) =>
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        view.querySelector(`#f-sec-${a.dataset.sec}`).scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "start" });
+      })
+    );
+  }
+
+  /* ── Lightbox: one page full-screen; click to zoom into detail ── */
+  const lightbox = document.createElement("dialog");
+  lightbox.className = "lightbox";
+  lightbox.innerHTML = `<img alt=""><button type="button" class="lightbox-close" aria-label="Close">×</button>`;
+  body.append(lightbox);
+  const lbImg = lightbox.querySelector("img");
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lbImg) return lightbox.classList.toggle("is-zoomed");
+    lightbox.close();
+  });
+  lightbox.addEventListener("close", () => lightbox.classList.remove("is-zoomed"));
+  view.addEventListener("click", (e) => {
+    const btn = e.target.closest(".sheet-open");
+    if (!btn) return;
+    const img = btn.querySelector("img");
+    lbImg.src = img.dataset.full;
+    lbImg.alt = img.alt;
+    lightbox.showModal();
+  });
+
   const steps = (list) =>
     list?.length
       ? `<ol class="steps">${list.map(([name, text]) => `<li><b>${name}</b><span>${text}</span></li>`).join("")}</ol>`
@@ -122,8 +220,11 @@
       document.title = "About · Khushi Arora";
     } else if (id) {
       const p = byId(id);
-      view.className = `project${p.draft ? " is-draft" : ""}`;
-      view.innerHTML = template(p);
+      const folio = p.type === "folio";
+      view.className = `project${p.draft ? " is-draft" : ""}${folio ? " is-folio" : ""}`;
+      view.innerHTML = folio ? folioTemplate(p) : template(p);
+      view.scrollTop = 0;
+      if (folio) initFolio();
       document.title = `${p.draft ? "Coming soon" : p.title} · Khushi Arora`;
     } else {
       view.innerHTML = "";
@@ -178,7 +279,7 @@
   );
 
   addEventListener("keydown", (e) => {
-    if (!current || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!current || lightbox.open || e.metaKey || e.ctrlKey || e.altKey) return;
     const i = projects.findIndex((p) => p.id === current);
     if (e.key === "Escape") go(null);
     if (i < 0) return;

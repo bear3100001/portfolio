@@ -7,7 +7,7 @@ A single-page portfolio built from the Framer homepage. The hero sentence is the
 | Girl (after "Hi,") | Profile card → "Full CV" opens the About view (`/#/about`) |
 | Guinea pig | 01 Schedule Assistant |
 | Cat | 02 Consultant Door Sync |
-| Faces | 03 (draft) |
+| Faces | 03 Selected Works (scrolling portfolio pages) |
 | Hands | 04 (draft) |
 
 The mouse logo and "← Hi, back to start" return to the hero. In a project, ← / → switch projects and Esc goes back.
@@ -28,6 +28,13 @@ Open `projects.js`, find the `project-03` entry, remove `draft: true` and fill i
 
 To link a project to a different drawing, change `data-project="…"` on that drawing in `index.html`
 so it matches the project's `id`.
+
+## Selected Works (portfolio pages)
+
+The faces drawing opens a scrolling view of portfolio pages, defined by the `selected-works` entry in `projects.js`
+(`type: "folio"`). Each section has a `title`, `subtitle` and a list of `pages`: `[file name, description, "portrait"?]`.
+Page images live in `assets/folio/` as `<name>-l.jpg` (large, 2400 px wide spreads / 1300 px portrait) and
+`<name>-s.jpg` (small, for phones). Click a page on the site to view it full-screen; click again to zoom.
 
 ## Editing the CV
 

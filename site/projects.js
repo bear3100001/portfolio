@@ -86,10 +86,41 @@ window.PROJECTS = [
     linkLabel: "Download skill",
   },
   {
-    id: "project-03",
-    draft: true,
-    title: "Work in progress",
-    summary: "A design, technology or architecture project, being documented now.",
+    /*
+      A folio project: a scrolling sequence of portfolio pages, grouped into sections.
+      Pages live in assets/folio as <name>-l.jpg (large) and <name>-s.jpg (small, for phones).
+    */
+    id: "selected-works",
+    type: "folio",
+    title: "Selected Works",
+    meta: "Architecture · 2022 – Present",
+    sections: [
+      { title: "Cover", bare: true, pages: [["cover", "Portfolio cover", "portrait"]] },
+      {
+        title: "Populous",
+        subtitle: "King Salman Stadium · RIBA Stage 2–4",
+        pages: [
+          ["populous-royal-lounge", "King Salman Stadium: Royal Lounge"],
+          ["populous-changing-room", "King Salman Stadium: Players' Changing Room"],
+        ],
+      },
+      {
+        title: "Maison Vestige",
+        subtitle: "A Museum of Constructed Belonging · Year 3, UG03",
+        pages: [
+          ["third-year-render", "Third Year Building Project, interior render", "portrait"],
+          ["maison-vestige-1", "Maison Vestige: street view at night"],
+          ["maison-vestige-2", "Maison Vestige: section"],
+          ["maison-vestige-3", "Technical investigation into vernacular construction"],
+          ["maison-vestige-4", "Entrance to the building at night"],
+        ],
+      },
+      {
+        title: "Light After Dark",
+        subtitle: "Reimagining the City · Year 3, UG03",
+        pages: [["light-after-dark", "Light After Dark: the York watergate at night"]],
+      },
+    ],
   },
   {
     id: "project-04",
