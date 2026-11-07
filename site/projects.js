@@ -90,8 +90,7 @@ window.PROJECTS = [
       A folio project: portfolio pages rebuilt as native layouts.
       A page is a list of rows. Each row has `cols` (a CSS grid template, desktop only),
       `align` (start | center | end | stretch), `spread` (push a cell's blocks to its top and bottom),
-      `centreLast` (centre a cell's last block in the space left below the others),
-      `indent` (line the row up with the section heading's title)
+      `centreLast` (centre a cell's last block in the space left below the others)
       and `cells`, each cell a list of blocks:
         { img, alt, full?, vector?, hero?, fit?, fill?, narrow?, centre? }  image from assets/folio (<img>-l.jpg / -s.jpg);
                                      full = file shown in the full-screen view (e.g. an .svg);
@@ -153,10 +152,12 @@ window.PROJECTS = [
           {
             rows: [
               {
-                cols: "minmax(0, 2fr) minmax(0, 1fr)",
-                align: "end",
-                indent: true,
-                cells: [[{ lead: "The project centres around the strained and complex relationship between immigrant workers and the French state, focusing on those whose contributions remain undocumented yet essential to the ongoing construction of Paris." }], [{ meta: ["Year 3 Architecture BSc", "UG03 / Daniel Dream & Ifigenia Liangi", "Building Project (Rhino 3D / Adobe Suite / Blender)"] }, { date: "Sep 2024 – Dec 2024" }]],
+                cols: "minmax(0, 34em) 1fr",
+                cells: [[
+                  { meta: ["Year 3 Architecture BSc", "UG03 / Daniel Dream & Ifigenia Liangi", "Building Project (Rhino 3D / Adobe Suite / Blender)"] },
+                  { date: "Sep 2024 – Dec 2024" },
+                  { body: ["The project centres around the strained and complex relationship between immigrant workers and the French state, focusing on those whose contributions remain undocumented yet essential to the ongoing construction of Paris."] },
+                ], []],
               },
               { cells: [[{ img: "mv-interior", alt: "Maison Vestige interior render", hero: true }]] },
             ],
