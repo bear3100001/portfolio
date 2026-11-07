@@ -495,7 +495,7 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
 .f-index a:hover { color: var(--ink-soft); }
 .f-index a.is-current { color: var(--ink); background-size: 100% 1px; transition: color 0.4s var(--ease), background-size 0.5s var(--ease); }
 
-.f-pages { position: relative; }
+.f-pages { position: relative; padding-bottom: var(--foot, 0px); }  /* room for the last page to rise clear of the footer */
 .f-mark { display: block; height: 0; }
 
 /* A card is at least one screen tall and sticks at its resting offset;
@@ -686,6 +686,29 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
 }
 .pg-foot span { font-style: italic; }
 .pg-foot em { font-style: normal; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+
+/* While scrolling the portfolio, the top row and footer slide away, then return on pause.
+   The footer floats over the pages here, so hiding it gives the pages the full height. */
+body[data-folio] .foot {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 4;
+  padding-top: 14px;
+  background: var(--paper);
+  transition: transform 0.6s var(--ease), opacity 0.6s var(--ease);
+}
+body[data-folio] .f-bar { transition: transform 0.6s var(--ease), opacity 0.6s var(--ease); }
+body[data-folio].is-scrolling .foot {
+  transform: translateY(100%);
+  opacity: 0;
+  transition-duration: 0.5s;
+}
+body[data-folio].is-scrolling .f-bar {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition-duration: 0.5s;
+}
 
 /* Lightbox */
 .lightbox {

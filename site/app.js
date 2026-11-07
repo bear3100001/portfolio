@@ -180,12 +180,16 @@
     // Screen height, and each card's resting offset (negative when it is taller than the screen)
     const stick = sheets.map(() => 0);
     const bar = view.querySelector(".f-bar");
+    const foot = document.querySelector(".foot");
     let barH = 0;
+    let footH = 0;
     const measure = () => {
       barH = getComputedStyle(bar).position === "sticky" ? bar.offsetHeight : 0;
-      const h = view.clientHeight - barH;
+      footH = foot.offsetHeight;
+      const h = view.clientHeight - barH - footH;
       view.style.setProperty("--ph", `${h}px`);
       view.style.setProperty("--bar", `${barH}px`);
+      view.style.setProperty("--foot", `${footH}px`);
       sheets.forEach((s, i) => {
         stick[i] = Math.min(0, h - s.offsetHeight);
         s.style.setProperty("--stick", `${stick[i] + barH}px`);
@@ -202,7 +206,7 @@
     const tick = () => {
       raf = 0;
       const top = view.getBoundingClientRect().top + barH;
-      const h = view.clientHeight - barH;
+      const h = view.clientHeight - barH - footH;
       let settling = false;
       let currentSec = sheets[0].dataset.sec;
       sheets.forEach((s, i) => {
@@ -221,6 +225,15 @@
     };
     const onScroll = () => raf || (raf = requestAnimationFrame(tick));
     view.addEventListener("scroll", onScroll, { passive: true });
+
+    // While scrolling, the top row and footer slide away; they return once scrolling pauses
+    let rest = 0;
+    const onMove = () => {
+      body.classList.add("is-scrolling");
+      clearTimeout(rest);
+      rest = setTimeout(() => body.classList.remove("is-scrolling"), 550);
+    };
+    view.addEventListener("scroll", onMove, { passive: true });
     measure();
 
     links.forEach((a) =>
@@ -235,9 +248,13 @@
     folioCleanup = () => {
       ro.disconnect();
       view.removeEventListener("scroll", onScroll);
+      view.removeEventListener("scroll", onMove);
+      clearTimeout(rest);
+      body.classList.remove("is-scrolling");
       cancelAnimationFrame(raf);
       view.style.removeProperty("--ph");
       view.style.removeProperty("--bar");
+      view.style.removeProperty("--foot");
       folioCleanup = () => {};
     };
   }
@@ -270,6 +287,7 @@
   function render(id) {
     current = id;
     body.dataset.view = id ? "project" : "home";
+    body.toggleAttribute("data-folio", Boolean(id && byId(id)?.type === "folio"));
 
     if (id === "about") {
       folioCleanup();
