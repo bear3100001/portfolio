@@ -556,6 +556,10 @@ body:has(.card:popover-open) .line > :not(.is-open) { opacity: 0.12; filter: gra
 }
 .pg-col { display: grid; gap: clamp(14px, 2.4vh, 24px); align-content: start; min-width: 0; }
 .pg--spread > .pg-col { align-content: space-between; }
+.pg--centre-last > .pg-col { grid-template-rows: auto 1fr; align-content: stretch; }
+.pg--centre-last > .pg-col > :last-child { align-self: center; }
+/* discount the gap above, so text sits in the optical centre of the empty space */
+.pg--centre-last > .pg-col > .pg-body:last-child { margin-top: calc(-1 * clamp(14px, 2.4vh, 24px)); }
 .pg-row { display: grid; gap: clamp(14px, 2vw, 28px); align-items: end; }
 
 .pg-fig { margin: 0; }
@@ -839,6 +843,7 @@ html[data-dir="prev"]::view-transition-old(root) { animation-name: leave-x; }
   .pg-fig--fill { height: auto; min-height: 0; }
   .pg-fig--fill picture, .pg-fig--fill img { position: static; height: auto; }
   .pg-body--2 { columns: 1; }
+  .pg--centre-last > .pg-col > .pg-body:last-child { margin-top: 0; }
   .sheet { min-height: 0; padding: 14px 0 24px; }
   .f-bar { position: static; flex-wrap: wrap; row-gap: 6px; }
   .f-index { flex-wrap: wrap; width: 100%; margin: 0; column-gap: 16px; }

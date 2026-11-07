@@ -89,7 +89,8 @@ window.PROJECTS = [
     /*
       A folio project: portfolio pages rebuilt as native layouts.
       A page is a list of rows. Each row has `cols` (a CSS grid template, desktop only),
-      `align` (start | center | end | stretch), `spread` (push a cell's blocks to its top and bottom)
+      `align` (start | center | end | stretch), `spread` (push a cell's blocks to its top and bottom),
+      `centreLast` (centre a cell's last block in the space left below the others)
       and `cells`, each cell a list of blocks:
         { img, alt, full?, vector?, hero?, fit?, fill?, narrow?, centre? }  image from assets/folio (<img>-l.jpg / -s.jpg);
                                      full = file shown in the full-screen view (e.g. an .svg);
@@ -111,11 +112,11 @@ window.PROJECTS = [
     sections: [
       {
         title: "Populous",
-        subtitle: "King Salman Stadium · RIBA Stage 2–4",
+        subtitle: "Stadium Project · RIBA Stage 2–4",
         pages: [
           {
-            rows: [{ cells: [[{ img: "pop-lounge", alt: "King Salman Stadium Royal Lounge, evening and daytime renders", hero: true }]] }],
-            caption: "King Salman Stadium: Royal Lounge",
+            rows: [{ cells: [[{ img: "pop-lounge", alt: "Stadium Project Royal Lounge, evening and daytime renders", hero: true }]] }],
+            caption: "Stadium Project: Royal Lounge",
             date: "September – Present",
           },
           {
@@ -190,11 +191,13 @@ window.PROJECTS = [
           },
           {
             rows: [
+              { cells: [[{ title: "Technical Investigation into Vernacular Construction" }]] },
               {
                 cols: "1fr 1fr",
+                align: "stretch",
+                centreLast: true,
                 cells: [
                   [
-                    { title: "Technical Investigation into Vernacular Construction" },
                     { img: "tiv-collages", alt: "Collage studies of salvaged roof structures" },
                     { img: "tiv-roof-detail", alt: "Roof joinery detail drawing" },
                   ],
